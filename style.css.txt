@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+}
+
+#game-container {
+    border: 3px solid #f18f01;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(241, 143, 1, 0.3);
+}
+
+#ui-overlay {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #2e86ab;
+    font-size: 14px;
+    z-index: 100;
+    min-width: 180px;
+}
+
+#ui-overlay div {
+    margin: 5px 0;
+    text-shadow: 1px 1px 2px #000;
+}
+
+#money { color: #ffd700; font-weight: bold; }
+#time { color: #87ceeb; }
+#income { color: #90ee90; }
+#energy { color: #ff6b6b; }
+#level { color: #ffd700; }
+
+#shop {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 20, 40, 0.95);
+    color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    border: 3px solid #f18f01;
+    z-index: 200;
+    max-height: 80vh;
+    overflow-y: auto;
+    min-width: 400px;
+}
+
+#shop h2 {
+    color: #f18f01;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.shop-item {
+    background: rgba(46, 134, 171, 0.2);
+    border: 1px solid #2e86ab;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shop-item button {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.shop-item button:hover {
+    background: #2ecc71;
+}
+
+.shop-item button:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+button {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+button:hover {
+    background: #c0392b;
+}

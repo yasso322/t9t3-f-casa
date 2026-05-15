@@ -1,0 +1,838 @@
+// ============================================
+// T9T3 F CASA - YASSIN EDITION
+// Game by Yassin from Tacharok, Casablanca
+// ============================================
+
+// ECONOMY SYSTEM
+let gameData = {
+    money: 100,
+    passiveIncome: 10,
+    gameTime: 0,
+    level: 1,
+    energy: 100,
+    maxEnergy: 100,
+    ownedCars: ['petit_taxi'],
+    ownedTrafficLights: [],
+    currentCar: 'petit_taxi',
+    playerName: 'Yassin'
+};
+
+// CAR DATABASE - KOLCHI DIAL CASA!
+const CARS = {
+    // CASA CLASSICS
+    petit_taxi: {
+        id: 'petit_taxi',
+        name: 'Petit Taxi 🚕',
+        brand: 'Casa',
+        price: 5000,
+        speed: 80,
+        acceleration: 40,
+        handling: 60,
+        level: 1,
+        type: 'classic',
+        color: 0xFF0000
+    },
+    grand_taxi: {
+        id: 'grand_taxi',
+        name: 'Grand Taxi 🚖',
+        brand: 'Casa',
+        price: 15000,
+        speed: 100,
+        acceleration: 50,
+        handling: 55,
+        level: 5,
+        type: 'classic',
+        color: 0xFFA500
+    },
+    mercedes_240: {
+        id: 'mercedes_240',
+        name: 'Mercedes 240 🚗',
+        brand: 'Mercedes',
+        price: 50000,
+        speed: 120,
+        acceleration: 55,
+        handling: 65,
+        level: 8,
+        type: 'classic',
+        color: 0xC0C0C0
+    },
+    peugeot_206: {
+        id: 'peugeot_206',
+        name: 'Peugeot 206 🚗',
+        brand: 'Peugeot',
+        price: 30000,
+        speed: 110,
+        acceleration: 52,
+        handling: 70,
+        level: 6,
+        type: 'classic',
+        color: 0x0000FF
+    },
+    dacia_logan: {
+        id: 'dacia_logan',
+        name: 'Dacia Logan 🚗',
+        brand: 'Dacia',
+        price: 25000,
+        speed: 100,
+        acceleration: 48,
+        handling: 62,
+        level: 5,
+        type: 'classic',
+        color: 0x808080
+    },
+    renault_clio4: {
+        id: 'renault_clio4',
+        name: 'Renault Clio 4 🚗',
+        brand: 'Renault',
+        price: 40000,
+        speed: 130,
+        acceleration: 58,
+        handling: 72,
+        level: 7,
+        type: 'classic',
+        color: 0xFFFF00
+    },
+    
+    // SCOOTERS & MOTOS
+    honda_sh350: {
+        id: 'honda_sh350',
+        name: 'Honda SH350 🛵',
+        brand: 'Honda',
+        price: 45000,
+        speed: 120,
+        acceleration: 60,
+        handling: 85,
+        level: 10,
+        type: 'scooter',
+        color: 0xFF6600
+    },
+    honda_xadv: {
+        id: 'honda_xadv',
+        name: 'Honda X-ADV 750 🏍️',
+        brand: 'Honda',
+        price: 85000,
+        speed: 160,
+        acceleration: 70,
+        handling: 80,
+        level: 15,
+        type: 'scooter',
+        color: 0xFF0000
+    },
+    yamaha_tmax: {
+        id: 'yamaha_tmax',
+        name: 'Yamaha TMAX 560 🛵',
+        brand: 'Yamaha',
+        price: 95000,
+        speed: 170,
+        acceleration: 75,
+        handling: 82,
+        level: 16,
+        type: 'scooter',
+        color: 0x0000FF
+    },
+    yamaha_mt07: {
+        id: 'yamaha_mt07',
+        name: 'Yamaha MT-07 🏍️',
+        brand: 'Yamaha',
+        price: 75000,
+        speed: 190,
+        acceleration: 78,
+        handling: 88,
+        level: 14,
+        type: 'moto',
+        color: 0x1a1a2e
+    },
+    yamaha_mt09: {
+        id: 'yamaha_mt09',
+        name: 'Yamaha MT-09 🏍️',
+        brand: 'Yamaha',
+        price: 95000,
+        speed: 220,
+        acceleration: 85,
+        handling: 85,
+        level: 17,
+        type: 'moto',
+        color: 0x2d2d2d
+    },
+    yamaha_mt10: {
+        id: 'yamaha_mt10',
+        name: 'Yamaha MT-10 🏍️',
+        brand: 'Yamaha',
+        price: 120000,
+        speed: 250,
+        acceleration: 90,
+        handling: 88,
+        level: 20,
+        type: 'moto',
+        color: 0x111111
+    },
+    yamaha_r1: {
+        id: 'yamaha_r1',
+        name: 'Yamaha R1 🏍️',
+        brand: 'Yamaha',
+        price: 180000,
+        speed: 300,
+        acceleration: 95,
+        handling: 92,
+        level: 25,
+        type: 'moto',
+        color: 0x0066CC
+    },
+    kawasaki_zx10r: {
+        id: 'kawasaki_zx10r',
+        name: 'Kawasaki ZX-10R 🏍️',
+        brand: 'Kawasaki',
+        price: 200000,
+        speed: 310,
+        acceleration: 96,
+        handling: 93,
+        level: 28,
+        type: 'moto',
+        color: 0x00AA00
+    },
+    
+    // SPORT CARS
+    bmw_m3: {
+        id: 'bmw_m3',
+        name: 'BMW M3 🏎️',
+        brand: 'BMW',
+        price: 350000,
+        speed: 250,
+        acceleration: 85,
+        handling: 80,
+        level: 20,
+        type: 'sport',
+        color: 0x0066CC
+    },
+    bmw_m4: {
+        id: 'bmw_m4',
+        name: 'BMW M4 🏎️',
+        brand: 'BMW',
+        price: 450000,
+        speed: 280,
+        acceleration: 90,
+        handling: 82,
+        level: 25,
+        type: 'sport',
+        color: 0x0088FF
+    },
+    bmw_m5: {
+        id: 'bmw_m5',
+        name: 'BMW M5 🏎️',
+        brand: 'BMW',
+        price: 650000,
+        speed: 310,
+        acceleration: 95,
+        handling: 85,
+        level: 30,
+        type: 'sport',
+        color: 0x0033AA
+    },
+    mercedes_c63: {
+        id: 'mercedes_c63',
+        name: 'Mercedes C63 AMG 🏎️',
+        brand: 'Mercedes',
+        price: 400000,
+        speed: 270,
+        acceleration: 88,
+        handling: 78,
+        level: 22,
+        type: 'sport',
+        color: 0x333333
+    },
+    mercedes_e63: {
+        id: 'mercedes_e63',
+        name: 'Mercedes E63 AMG 🏎️',
+        brand: 'Mercedes',
+        price: 550000,
+        speed: 300,
+        acceleration: 92,
+        handling: 80,
+        level: 28,
+        type: 'sport',
+        color: 0x222222
+    },
+    audi_rs3: {
+        id: 'audi_rs3',
+        name: 'Audi RS3 🏎️',
+        brand: 'Audi',
+        price: 300000,
+        speed: 240,
+        acceleration: 82,
+        handling: 75,
+        level: 18,
+        type: 'sport',
+        color: 0xFF0000
+    },
+    audi_rs6: {
+        id: 'audi_rs6',
+        name: 'Audi RS6 🏎️',
+        brand: 'Audi',
+        price: 500000,
+        speed: 290,
+        acceleration: 90,
+        handling: 78,
+        level: 26,
+        type: 'sport',
+        color: 0xAA0000
+    },
+    porsche_911: {
+        id: 'porsche_911',
+        name: 'Porsche 911 🏎️',
+        brand: 'Porsche',
+        price: 800000,
+        speed: 320,
+        acceleration: 98,
+        handling: 95,
+        level: 35,
+        type: 'sport',
+        color: 0xFFD700
+    }
+};
+
+// TRAFFIC LIGHT TYPES
+const TRAFFIC_LIGHTS = {
+    simple: { id: 'simple', name: 'Calete Simple 🚦', price: 2000, type: 'simple' },
+    smart: { id: 'smart', name: 'Calete Smart 🚦', price: 5000, type: 'smart' },
+    police: { id: 'police', name: 'Calete Police 🚦👮', price: 10000, type: 'police' },
+    golden: { id: 'golden', name: 'Calete Golden ✨', price: 25000, type: 'golden' }
+};
+
+// FOOD ITEMS
+const FOOD = {
+    khobz: { name: 'Khobz 🍞', price: 5, energy: 10, health: 0 },
+    harira: { name: 'Harira 🥣', price: 15, energy: 25, health: 5 },
+    tacos: { name: 'Tacos 🌮', price: 20, energy: 30, health: 0 },
+    couscous: { name: 'Couscous 🍲', price: 50, energy: 50, health: 20 },
+    mint_tea: { name: 'Mint Tea 🍵', price: 10, energy: 15, health: 5 }
+};
+
+// PHASER GAME CONFIG
+const config = {
+    type: Phaser.AUTO,
+    width: 1000,
+    height: 600,
+    parent: 'game-container',
+    backgroundColor: '#87CEEB',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 600 },
+            debug: false
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+let game = new Phaser.Game(config);
+let player;
+let cursors;
+let cars = [];
+let trafficLights = [];
+let platforms;
+let ground;
+let shopKey;
+let isShopOpen = false;
+let lastMinute = 0;
+
+function preload() {
+    // Ma3endna images, nswbo koulchi b graphics!
+}
+
+function create() {
+    // ========== TACHAROK ZONE - DYAL YASSIN! ==========
+    
+    // Sky
+    this.add.rectangle(500, 300, 1000, 600, 0x87CEEB);
+    
+    // Buildings (Tacharok style - terracotta/orange)
+    createBuilding(this, 100, 350, 150, 250, 0xD2691E); // Building 1
+    createBuilding(this, 300, 300, 180, 300, 0xCD853F); // Building 2
+    createBuilding(this, 550, 320, 160, 280, 0xD2691E); // Building 3
+    createBuilding(this, 800, 280, 200, 320, 0xCD853F); // Building 4
+    createBuilding(this, 950, 360, 120, 240, 0xD2691E); // Building 5
+    
+    // Windows with lights (night feeling)
+    for (let i = 0; i < 20; i++) {
+        let wx = Phaser.Math.Between(50, 950);
+        let wy = Phaser.Math.Between(150, 400);
+        this.add.rectangle(wx, wy, 15, 20, 0xFFD700, 0.7);
+    }
+    
+    // Ground (asphalt street)
+    ground = this.add.rectangle(500, 580, 1000, 40, 0x333333);
+    this.physics.add.existing(ground, true);
+    
+    // Sidewalk
+    this.add.rectangle(500, 540, 1000, 20, 0x808080);
+    
+    // TACHAROK SIGN
+    this.add.text(500, 50, '🏘️ TACHAROK - CASABLANCA', {
+        fontSize: '32px',
+        fill: '#fff',
+        fontFamily: 'Courier New',
+        stroke: '#000',
+        strokeThickness: 4
+    }).setOrigin(0.5);
+    
+    this.add.text(500, 90, 'Welcome home, Yassin! 🇲🇦', {
+        fontSize: '16px',
+        fill: '#FFD700',
+        fontFamily: 'Courier New'
+    }).setOrigin(0.5);
+    
+    // Player (Yassin!)
+    player = this.add.rectangle(100, 500, 30, 50, 0x2E86AB);
+    this.physics.add.existing(player);
+    player.body.setCollideWorldBounds(true);
+    player.body.setBounce(0.1);
+    
+    // Player face
+    this.add.circle(100, 485, 8, 0xFFDBAC);
+    
+    // Platforms (rooftops for parkour)
+    platforms = this.physics.add.staticGroup();
+    
+    // Rooftop 1
+    let roof1 = this.add.rectangle(200, 400, 120, 15, 0x8B4513);
+    this.physics.add.existing(roof1, true);
+    platforms.add(roof1);
+    
+    // Rooftop 2
+    let roof2 = this.add.rectangle(450, 350, 100, 15, 0x8B4513);
+    this.physics.add.existing(roof2, true);
+    platforms.add(roof2);
+    
+    // Rooftop 3
+    let roof3 = this.add.rectangle(700, 380, 140, 15, 0x8B4513);
+    this.physics.add.existing(roof3, true);
+    platforms.add(roof3);
+    
+    // Rooftop 4 (high)
+    let roof4 = this.add.rectangle(350, 250, 80, 15, 0x8B4513);
+    this.physics.add.existing(roof4, true);
+    platforms.add(roof4);
+    
+    // Collisions
+    this.physics.add.collider(player, ground);
+    this.physics.add.collider(player, platforms);
+    
+    // Controls
+    cursors = this.input.keyboard.createCursorKeys();
+    shopKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    
+    // ========== CARS (TONOBILAT) ==========
+    
+    // Petit Taxi (red)
+    createCar(this, 50, 555, 'right', 100, 0xFF0000, '🚕');
+    
+    // Another Petit Taxi
+    createCar(this, 700, 555, 'left', 80, 0xFF0000, '🚕');
+    
+    // Grand Taxi (orange)
+    createCar(this, 400, 555, 'right', 70, 0xFFA500, '🚖');
+    
+    // ========== TRAFFIC LIGHTS ==========
+    
+    // Calete 1
+    createTrafficLight(this, 300, 500);
+    
+    // Calete 2
+    createTrafficLight(this, 700, 500);
+    
+    // ========== NPCs ==========
+    
+    // Larbi - Taxi Driver
+    createNPC(this, 850, 515, 0x4169E1, '👤 Larbi');
+    
+    // Fatima - Shopkeeper
+    createNPC(this, 150, 515, 0xFF69B4, '👤 Fatima');
+    
+    // Driss - Kid
+    createNPC(this, 600, 515, 0x32CD32, '👤 Driss');
+    
+    // ========== INTERACTIVE OBJECTS ==========
+    
+    // Cafe
+    this.add.rectangle(900, 480, 80, 60, 0x8B4513);
+    this.add.text(900, 470, '☕ CAFE', { fontSize: '12px', fill: '#fff' }).setOrigin(0.5);
+    
+    // Hanout (Shop)
+    this.add.rectangle(50, 480, 80, 60, 0x228B22);
+    this.add.text(50, 470, '🏪 SHOP', { fontSize: '12px', fill: '#fff' }).setOrigin(0.5);
+    
+    // Mosquée
+    this.add.rectangle(500, 200, 100, 80, 0x006400);
+    this.add.circle(500, 160, 20, 0xFFD700);
+    this.add.text(500, 200, '🕌', { fontSize: '40px' }).setOrigin(0.5);
+    
+    // ========== INSTRUCTIONS ==========
+    
+    this.add.text(500, 140, 'Controls: ARROWS to move/jump | S for Shop | Collect coins!', {
+        fontSize: '14px',
+        fill: '#fff',
+        backgroundColor: '#000',
+        padding: { x: 10, y: 5 }
+    }).setOrigin(0.5);
+    
+    // Coins to collect
+    for (let i = 0; i < 8; i++) {
+        let cx = Phaser.Math.Between(100, 900);
+        let cy = Phaser.Math.Between(300, 500);
+        let coin = this.add.text(cx, cy, '💰', { fontSize: '20px' });
+        this.physics.add.existing(coin);
+        coin.body.setAllowGravity(false);
+        
+        this.physics.add.overlap(player, coin, function() {
+            gameData.money += 10;
+            coin.destroy();
+            updateUI();
+            showFloatingText(this, cx, cy, '+10 DH', '#FFD700');
+        }, null, this);
+    }
+    
+    // Time event for passive income
+    this.time.addEvent({
+        delay: 60000, // Every minute
+        callback: addPassiveIncome,
+        callbackScope: this,
+        loop: true
+    });
+    
+    // Update UI initially
+    updateUI();
+}
+
+function update(time, delta) {
+    // Player movement
+    if (cursors.left.isDown) {
+        player.body.setVelocityX(-200);
+    } else if (cursors.right.isDown) {
+        player.body.setVelocityX(200);
+    } else {
+        player.body.setVelocityX(0);
+    }
+    
+    // Jump
+    if (cursors.up.isDown && player.body.touching.down) {
+        player.body.setVelocityY(-400);
+    }
+    
+    // Shop toggle
+    if (Phaser.Input.Keyboard.JustDown(shopKey)) {
+        toggleShop();
+    }
+    
+    // Update cars
+    cars.forEach(car => {
+        car.update();
+    });
+    
+    // Update traffic lights
+    trafficLights.forEach(light => {
+        light.update(time);
+    });
+    
+    // Update game time (every minute in real time = 1 game minute)
+    let currentMinute = Math.floor(time / 60000);
+    if (currentMinute > lastMinute) {
+        lastMinute = currentMinute;
+        gameData.gameTime++;
+        updateUI();
+    }
+    
+    // Energy drain
+    if (Math.random() < 0.001) {
+        gameData.energy = Math.max(0, gameData.energy - 1);
+        updateUI();
+    }
+}
+
+// ========== HELPER FUNCTIONS ==========
+
+function createBuilding(scene, x, y, width, height, color) {
+    let building = scene.add.rectangle(x, y, width, height, color);
+    
+    // Roof detail
+    scene.add.rectangle(x, y - height/2, width + 10, 10, 0x8B4513);
+    
+    return building;
+}
+
+function createCar(scene, x, y, direction, speed, color, emoji) {
+    let carBody = scene.add.rectangle(x, y, 60, 30, color);
+    scene.physics.add.existing(carBody);
+    carBody.body.setAllowGravity(false);
+    carBody.body.setImmovable(true);
+    
+    let carEmoji = scene.add.text(x, y - 10, emoji, { fontSize: '24px' }).setOrigin(0.5);
+    
+    let carObj = {
+        body: carBody,
+        emoji: carEmoji,
+        direction: direction,
+        speed: speed,
+        update: function() {
+            if (this.direction === 'right') {
+                this.body.x += this.speed * 0.016;
+                this.emoji.x = this.body.x;
+                if (this.body.x > 1050) {
+                    this.body.x = -50;
+                    this.emoji.x = -50;
+                }
+            } else {
+                this.body.x -= this.speed * 0.016;
+                this.emoji.x = this.body.x;
+                if (this.body.x < -50) {
+                    this.body.x = 1050;
+                    this.emoji.x = 1050;
+                }
+            }
+        }
+    };
+    
+    cars.push(carObj);
+    
+    // Collision with player
+    scene.physics.add.collider(player, carBody, function() {
+        gameData.energy -= 20;
+        player.body.setVelocityY(-200);
+        player.body.setVelocityX(direction === 'right' ? -200 : 200);
+        updateUI();
+        showFloatingText(scene, player.x, player.y - 50, '-20 Energy! 💥', '#FF0000');
+    });
+    
+    return carObj;
+}
+
+function createTrafficLight(scene, x, y) {
+    let pole = scene.add.rectangle(x, y, 10, 60, 0x333333);
+    let lightBox = scene.add.rectangle(x, y - 30, 20, 50, 0x000000);
+    
+    let redLight = scene.add.circle(x, y - 45, 8, 0xFF0000);
+    let yellowLight = scene.add.circle(x, y - 30, 8, 0x333300);
+    let greenLight = scene.add.circle(x, y - 15, 8, 0x003300);
+    
+    let lightObj = {
+        red: redLight,
+        yellow: yellowLight,
+        green: greenLight,
+        state: 'red',
+        timer: 0,
+        update: function(time) {
+            this.timer += 16;
+            if (this.timer > 3000) {
+                this.timer = 0;
+                if (this.state === 'red') {
+                    this.state = 'green';
+                    this.red.setFillStyle(0x330000);
+                    this.green.setFillStyle(0x00FF00);
+                } else if (this.state === 'green') {
+                    this.state = 'yellow';
+                    this.green.setFillStyle(0x003300);
+                    this.yellow.setFillStyle(0xFFFF00);
+                } else {
+                    this.state = 'red';
+                    this.yellow.setFillStyle(0x333300);
+                    this.red.setFillStyle(0xFF0000);
+                }
+            }
+        }
+    };
+    
+    trafficLights.push(lightObj);
+    return lightObj;
+}
+
+function createNPC(scene, x, y, color, name) {
+    let npc = scene.add.rectangle(x, y, 25, 40, color);
+    scene.physics.add.existing(npc, true);
+    
+    scene.add.text(x, y - 35, name, {
+        fontSize: '10px',
+        fill: '#fff',
+        backgroundColor: '#000',
+        padding: { x: 3, y: 1 }
+    }).setOrigin(0.5);
+    
+    // Interaction
+    scene.physics.add.overlap(player, npc, function() {
+        // Show dialogue (simplified)
+    });
+}
+
+function showFloatingText(scene, x, y, text, color) {
+    let floating = scene.add.text(x, y, text, {
+        fontSize: '16px',
+        fill: color,
+        fontWeight: 'bold',
+        stroke: '#000',
+        strokeThickness: 2
+    }).setOrigin(0.5);
+    
+    scene.tweens.add({
+        targets: floating,
+        y: y - 50,
+        alpha: 0,
+        duration: 1000,
+        onComplete: function() {
+            floating.destroy();
+        }
+    });
+}
+
+function addPassiveIncome() {
+    gameData.money += gameData.passiveIncome * gameData.level;
+    
+    // Hourly bonus
+    if (gameData.gameTime % 60 === 0 && gameData.gameTime > 0) {
+        gameData.money += 100;
+        showFloatingText(game.scene.scenes[0], 500, 300, '+100 DH Bonus! 🎉', '#FFD700');
+    }
+    
+    updateUI();
+}
+
+function updateUI() {
+    document.getElementById('money').textContent = `💰 ${gameData.money.toLocaleString()} DH`;
+    document.getElementById('time').textContent = `⏱️ ${gameData.gameTime} min`;
+    document.getElementById('income').textContent = `📈 +${gameData.passiveIncome * gameData.level} DH/min`;
+    document.getElementById('energy').textContent = `⚡ Energy: ${gameData.energy}%`;
+    document.getElementById('level').textContent = `⭐ Level: ${gameData.level}`;
+}
+
+// ========== SHOP SYSTEM ==========
+
+function toggleShop() {
+    let shopDiv = document.getElementById('shop');
+    if (isShopOpen) {
+        closeShop();
+    } else {
+        openShop();
+    }
+}
+
+function openShop() {
+    isShopOpen = true;
+    let shopDiv = document.getElementById('shop');
+    let content = document.getElementById('shop-content');
+    content.innerHTML = '';
+    
+    // Cars section
+    content.innerHTML += '<h3>🚗 Cars & Motorcycles</h3>';
+    Object.values(CARS).forEach(car => {
+        let owned = gameData.ownedCars.includes(car.id);
+        let canAfford = gameData.money >= car.price;
+        let canLevel = gameData.level >= car.level;
+        
+        let itemDiv = document.createElement('div');
+        itemDiv.className = 'shop-item';
+        itemDiv.innerHTML = `
+            <div>
+                <strong>${car.name}</strong><br>
+                <small>Speed: ${car.speed} km/h | Level: ${car.level}</small>
+            </div>
+            <div>
+                ${owned ? '<span style="color:#27ae60">OWNED ✅</span>' : 
+                  `<button onclick="buyCar('${car.id}')" ${!canAfford || !canLevel ? 'disabled' : ''}>
+                    ${car.price.toLocaleString()} DH
+                   </button>`}
+            </div>
+        `;
+        content.appendChild(itemDiv);
+    });
+    
+    // Traffic Lights section
+    content.innerHTML += '<h3>🚦 Traffic Lights</h3>';
+    Object.values(TRAFFIC_LIGHTS).forEach(light => {
+        let owned = gameData.ownedTrafficLights.includes(light.id);
+        let canAfford = gameData.money >= light.price;
+        
+        let itemDiv = document.createElement('div');
+        itemDiv.className = 'shop-item';
+        itemDiv.innerHTML = `
+            <div>
+                <strong>${light.name}</strong><br>
+                <small>Type: ${light.type}</small>
+            </div>
+            <div>
+                ${owned ? '<span style="color:#27ae60">OWNED ✅</span>' : 
+                  `<button onclick="buyTrafficLight('${light.id}')" ${!canAfford ? 'disabled' : ''}>
+                    ${light.price.toLocaleString()} DH
+                   </button>`}
+            </div>
+        `;
+        content.appendChild(itemDiv);
+    });
+    
+    // Food section
+    content.innerHTML += '<h3>🍞 Food</h3>';
+    Object.entries(FOOD).forEach(([key, food]) => {
+        let canAfford = gameData.money >= food.price;
+        
+        let itemDiv = document.createElement('div');
+        itemDiv.className = 'shop-item';
+        itemDiv.innerHTML = `
+            <div>
+                <strong>${food.name}</strong><br>
+                <small>Energy: +${food.energy} | Health: +${food.health}</small>
+            </div>
+            <div>
+                <button onclick="buyFood('${key}')" ${!canAfford ? 'disabled' : ''}>
+                    ${food.price} DH
+                </button>
+            </div>
+        `;
+        content.appendChild(itemDiv);
+    });
+    
+    shopDiv.style.display = 'block';
+}
+
+function closeShop() {
+    isShopOpen = false;
+    document.getElementById('shop').style.display = 'none';
+}
+
+function buyCar(carId) {
+    let car = CARS[carId];
+    if (gameData.money >= car.price && gameData.level >= car.level) {
+        gameData.money -= car.price;
+        gameData.ownedCars.push(carId);
+        gameData.currentCar = carId;
+        updateUI();
+        openShop(); // Refresh
+        showFloatingText(game.scene.scenes[0], 500, 300, `Bought ${car.name}! 🎉`, '#00FF00');
+    }
+}
+
+function buyTrafficLight(lightId) {
+    let light = TRAFFIC_LIGHTS[lightId];
+    if (gameData.money >= light.price) {
+        gameData.money -= light.price;
+        gameData.ownedTrafficLights.push(lightId);
+        updateUI();
+        openShop(); // Refresh
+    }
+}
+
+function buyFood(foodKey) {
+    let food = FOOD[foodKey];
+    if (gameData.money >= food.price) {
+        gameData.money -= food.price;
+        gameData.energy = Math.min(gameData.maxEnergy, gameData.energy + food.energy);
+        updateUI();
+        openShop(); // Refresh
+        showFloatingText(game.scene.scenes[0], player.x, player.y - 50, `Yummy! ${food.name}`, '#00FF00');
+    }
+}
+
+// Make functions global for HTML onclick
+window.closeShop = closeShop;
+window.buyCar = buyCar;
+window.buyTrafficLight = buyTrafficLight;
+window.buyFood = buyFood;

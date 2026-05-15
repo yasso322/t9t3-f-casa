@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T9t3 f Casa - Yassin Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Phaser 3 CDN (FREE, ma khassek t7et walo) -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+</head>
+<body>
+    <div id="game-container"></div>
+    <div id="ui-overlay">
+        <div id="money">💰 100 DH</div>
+        <div id="time">⏱️ 0 min</div>
+        <div id="income">📈 +10 DH/min</div>
+        <div id="energy">⚡ Energy: 100%</div>
+        <div id="level">⭐ Level: 1</div>
+    </div>
+    <div id="shop" style="display:none;">
+        <h2>🏪 HANOUT CASA</h2>
+        <div id="shop-content"></div>
+        <button onclick="closeShop()">FERMER</button>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
